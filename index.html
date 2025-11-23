@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simple To-Do List</title>
+  <style>
+    :root{
+      --bg: #0f1724;
+      --card: #0b1220;
+      --muted: #97a0b3;
+      --accent: #7c5cff;
+      --accent-2: #4dd0e1;
+      --glass: rgba(255,255,255,0.04);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent),
+                  radial-gradient(900px 500px at 90% 90%, rgba(77,208,225,0.06), transparent),
+                  var(--bg);
+      color:#e6eef8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+    }
+
+    .container{
+      width:100%;
+      max-width:720px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:14px;
+      padding:28px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    header h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:0.2px;
+    }
+    header p{margin:0; color:var(--muted); font-size:13px}
+
+    .add-row{
+      display:flex;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .add-row input[type="text"]{
+      flex:1;
+      padding:12px 14px;
+      background:var(--glass);
+      border:1px solid rgba(255,255,255,0.03);
+      border-radius:10px;
+      color:inherit;
+      outline:none;
+      font-size:15px;
+    }
+
+    .btn{
+      background:linear-gradient(180deg,var(--accent), #5a3ce6);
+      border:none;
+      color:white;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      letter-spacing:0.2px;
+      box-shadow: 0 6px 18px rgba(124,92,255,0.14);
+    }
+
+    .list{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px;
+      border-radius:10px;
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .checkbox{
+      width:18px;
+      height:18px;
+      border-radius:6px;
+      display:inline-grid;
+      place-items:center;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,0.06);
+      background:transparent;
+    }
+
+    .label{
+      flex:1;
+      font-size:15px;
+      word-break:break-word;
+    }
+
+    .label.completed{
+      text-decoration:line-through;
+      opacity:0.6;
+    }
+
+    .controls{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .small{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.04);
+      padding:6px 8px;
+      border-radius:8px;
+      color:var(--muted);
+      font-size:13px;
+      cursor:pointer;
+    }
+
+    .filters{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-top:14px;
+    }
+
+    .filters .chip{
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:13px;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,0.03);
+      background:transparent;
+      color:var(--muted);
+    }
+
+    .filters .chip.active{
+      color:var(--bg);
+      background:linear-gradient(90deg,var(--accent-2),var(--accent));
+      font-weight:700;
+      border:none;
+    }
+
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:14px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    @media (max-width:520px){
+      .container{padding:18px}
+      header h1{font-size:18px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div style="width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-weight:800">✓</div>
+      <div>
+        <h1>My To-Do List</h1>
+        <p>Plan your day — add, complete, or remove tasks</p>
+      </div>
+    </header>
+
+    <div class="add-row">
+      <input id="taskInput" type="text" placeholder="Add a new task..." />
+      <button id="addBtn" class="btn">Add</button>
+    </div>
+
+    <ul id="todoList" class="list"></ul>
+
+    <div class="filters">
+      <div class="chip active" data-filter="all">All</div>
+      <div class="chip" data-filter="active">Active</div>
+      <div class="chip" data-filter="completed">Completed</div>
+    </div>
+
+    <div class="meta">
+      <div id="count">0 tasks</div>
+      <div style="display:flex;gap:8px;">
+        <button id="clearCompleted" class="small">Clear completed</button>
+        <button id="clearAll" class="small">Clear all</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById('taskInput');
+    const addBtn = document.getElementById('addBtn');
+    const list = document.getElementById('todoList');
+    const countEl = document.getElementById('count');
+    const chips = document.querySelectorAll('.filters .chip');
+    const clearCompleted = document.getElementById('clearCompleted');
+    const clearAll = document.getElementById('clearAll');
+
+    let tasks = [];
+    let filter = "all";
+
+    function render(){
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      list.innerHTML = "";
+
+      const visible = tasks.filter(t => {
+        if(filter === "all") return true;
+        if(filter === "active") return !t.done;
+        if(filter === "completed") return t.done;
+      });
+
+      visible.forEach((t, idx) => {
+        const li = document.createElement("li");
+        li.className = "item";
+
+        const cb = document.createElement("div");
+        cb.className = "checkbox";
+        cb.innerHTML = t.done ? "✔" : "";
+        cb.addEventListener("click", () => toggleDone(idx));
+
+        const label = document.createElement("div");
+        label.className = "label" + (t.done ? " completed" : "");
+        label.textContent = t.text;
+
+        const controls = document.createElement("div");
+        controls.className = "controls";
+
+        const del = document.createElement("button");
+        del.className = "small";
+        del.textContent = "Delete";
+        del.addEventListener("click", () => removeTask(idx));
+
+        controls.appendChild(del);
+        li.appendChild(cb);
+        li.appendChild(label);
+        li.appendChild(controls);
+
+        list.appendChild(li);
+      });
+
+      const remaining = tasks.filter(t => !t.done).length;
+      countEl.textContent = `${remaining} task${remaining === 1 ? "" : "s"} left`;
+    }
+
+    function addTask(text){
+      const trimmed = text.trim();
+      if(!trimmed) return;
+      tasks.unshift({ text: trimmed, done: false });
+      input.value = "";
+      render();
+    }
+
+    function toggleDone(visibleIndex){
+      const visible = tasks.filter(t => {
+        if(filter === "all") return true;
+        if(filter === "active") return !t.done;
+        if(filter === "completed") return t.done;
+      });
+
+      const task = visible[visibleIndex];
+      const idx = tasks.indexOf(task);
+
+      if(idx >= 0){
+        tasks[idx].done = !tasks[idx].done;
+        render();
+      }
+    }
+
+    function removeTask(visibleIndex){
+      const visible = tasks.filter(t => {
+        if(filter === "all") return true;
+        if(filter === "active") return !t.done;
+        if(filter === "completed") return t.done;
+      });
+
+      const task = visible[visibleIndex];
+      const idx = tasks.indexOf(task);
+
+      if(idx >= 0){
+        tasks.splice(idx, 1);
+        render();
+      }
+    }
+
+    addBtn.addEventListener("click", () => addTask(input.value));
+    input.addEventListener("keypress", e => {
+      if(e.key === "Enter") addTask(input.value);
+    });
+
+    chips.forEach(c => c.addEventListener("click", () => {
+      chips.forEach(x => x.classList.remove("active"));
+      c.classList.add("active");
+      filter = c.dataset.filter;
+      render();
+    }));
+
+    clearCompleted.addEventListener("click", () => {
+      tasks = tasks.filter(t => !t.done);
+      render();
+    });
+
+    clearAll.addEventListener("click", () => {
+      tasks = [];
+      render();
+    });
+
+    const saved = localStorage.getItem("tasks");
+    tasks = saved ? JSON.parse(saved) : [];
+    render();
+  </script>
+</body>
+</html>
