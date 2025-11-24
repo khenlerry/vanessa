@@ -13,7 +13,6 @@
       --accent-2: #4dd0e1;
       --glass: rgba(255,255,255,0.04);
     }
-
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -28,7 +27,6 @@
       justify-content:center;
       padding:40px 20px;
     }
-
     .container{
       width:100%;
       max-width:720px;
@@ -38,27 +36,23 @@
       box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
       border:1px solid rgba(255,255,255,0.04);
     }
-
     header{
       display:flex;
       align-items:center;
       gap:16px;
       margin-bottom:18px;
     }
-
     header h1{
       margin:0;
       font-size:20px;
       letter-spacing:0.2px;
     }
     header p{margin:0; color:var(--muted); font-size:13px}
-
     .add-row{
       display:flex;
       gap:12px;
       margin-bottom:18px;
     }
-
     .add-row input[type="text"]{
       flex:1;
       padding:12px 14px;
@@ -69,7 +63,6 @@
       outline:none;
       font-size:15px;
     }
-
     .btn{
       background:linear-gradient(180deg,var(--accent), #5a3ce6);
       border:none;
@@ -81,7 +74,6 @@
       letter-spacing:0.2px;
       box-shadow: 0 6px 18px rgba(124,92,255,0.14);
     }
-
     .list{
       list-style:none;
       padding:0;
@@ -89,8 +81,9 @@
       display:flex;
       flex-direction:column;
       gap:10px;
+      max-height:320px;      /* ADDED: Set your preferred max height */
+      overflow-y:auto;       /* ADDED: Enable vertical scrolling */
     }
-
     .item{
       display:flex;
       align-items:center;
@@ -100,7 +93,6 @@
       background:rgba(255,255,255,0.02);
       border:1px solid rgba(255,255,255,0.03);
     }
-
     .checkbox{
       width:18px;
       height:18px;
@@ -111,24 +103,20 @@
       border:1px solid rgba(255,255,255,0.06);
       background:transparent;
     }
-
     .label{
       flex:1;
       font-size:15px;
       word-break:break-word;
     }
-
     .label.completed{
       text-decoration:line-through;
       opacity:0.6;
     }
-
     .controls{
       display:flex;
       gap:8px;
       align-items:center;
     }
-
     .small{
       background:transparent;
       border:1px solid rgba(255,255,255,0.04);
@@ -138,14 +126,12 @@
       font-size:13px;
       cursor:pointer;
     }
-
     .filters{
       display:flex;
       gap:8px;
       align-items:center;
       margin-top:14px;
     }
-
     .filters .chip{
       padding:8px 10px;
       border-radius:999px;
@@ -155,14 +141,12 @@
       background:transparent;
       color:var(--muted);
     }
-
     .filters .chip.active{
       color:var(--bg);
       background:linear-gradient(90deg,var(--accent-2),var(--accent));
       font-weight:700;
       border:none;
     }
-
     .meta{
       display:flex;
       justify-content:space-between;
@@ -171,7 +155,6 @@
       color:var(--muted);
       font-size:13px;
     }
-
     @media (max-width:520px){
       .container{padding:18px}
       header h1{font-size:18px}
@@ -185,7 +168,6 @@
   <div style="width:52px; height:52px; border-radius:12px; overflow:hidden; display:grid; place-items:center; border:1px solid rgba(255,255,255,0.1);">
     <img src="v3.jpeg" alt="Logo" style="width:100%; height:100%; object-fit:cover;">
   </div>
-
   <!-- Title and subtitle -->
   <div>
     <h1>Watch list</h1>
@@ -196,15 +178,12 @@
       <input id="taskInput" type="text" placeholder="Add here." />
       <button id="addBtn" class="btn">Add</button>
     </div>
-
     <ul id="todoList" class="list"></ul>
-
     <div class="filters">
       <div class="chip active" data-filter="all">All</div>
       <div class="chip" data-filter="active">Active</div>
       <div class="chip" data-filter="completed">Completed</div>
     </div>
-
     <div class="meta">
       <div id="count">0 tasks</div>
       <div style="display:flex;gap:8px;">
@@ -213,7 +192,6 @@
       </div>
     </div>
   </div>
-
   <script>
     const input = document.getElementById('taskInput');
     const addBtn = document.getElementById('addBtn');
@@ -222,53 +200,41 @@
     const chips = document.querySelectorAll('.filters .chip');
     const clearCompleted = document.getElementById('clearCompleted');
     const clearAll = document.getElementById('clearAll');
-
     let tasks = [];
     let filter = "all";
-
     function render(){
       localStorage.setItem("tasks", JSON.stringify(tasks));
       list.innerHTML = "";
-
       const visible = tasks.filter(t => {
         if(filter === "all") return true;
         if(filter === "active") return !t.done;
         if(filter === "completed") return t.done;
       });
-
       visible.forEach((t, idx) => {
         const li = document.createElement("li");
         li.className = "item";
-
         const cb = document.createElement("div");
         cb.className = "checkbox";
         cb.innerHTML = t.done ? "✔" : "";
         cb.addEventListener("click", () => toggleDone(idx));
-
         const label = document.createElement("div");
         label.className = "label" + (t.done ? " completed" : "");
         label.textContent = t.text;
-
         const controls = document.createElement("div");
         controls.className = "controls";
-
         const del = document.createElement("button");
         del.className = "small";
         del.textContent = "Delete";
         del.addEventListener("click", () => removeTask(idx));
-
         controls.appendChild(del);
         li.appendChild(cb);
         li.appendChild(label);
         li.appendChild(controls);
-
         list.appendChild(li);
       });
-
       const remaining = tasks.filter(t => !t.done).length;
       countEl.textContent = `${remaining} task${remaining === 1 ? "" : "s"} left`;
     }
-
     function addTask(text){
       const trimmed = text.trim();
       if(!trimmed) return;
@@ -276,65 +242,53 @@
       input.value = "";
       render();
     }
-
     function toggleDone(visibleIndex){
       const visible = tasks.filter(t => {
         if(filter === "all") return true;
         if(filter === "active") return !t.done;
         if(filter === "completed") return t.done;
       });
-
       const task = visible[visibleIndex];
       const idx = tasks.indexOf(task);
-
       if(idx >= 0){
         tasks[idx].done = !tasks[idx].done;
         render();
       }
     }
-
     function removeTask(visibleIndex){
       const visible = tasks.filter(t => {
         if(filter === "all") return true;
         if(filter === "active") return !t.done;
         if(filter === "completed") return t.done;
       });
-
       const task = visible[visibleIndex];
       const idx = tasks.indexOf(task);
-
       if(idx >= 0){
         tasks.splice(idx, 1);
         render();
       }
     }
-
     addBtn.addEventListener("click", () => addTask(input.value));
     input.addEventListener("keypress", e => {
       if(e.key === "Enter") addTask(input.value);
     });
-
     chips.forEach(c => c.addEventListener("click", () => {
       chips.forEach(x => x.classList.remove("active"));
       c.classList.add("active");
       filter = c.dataset.filter;
       render();
     }));
-
     clearCompleted.addEventListener("click", () => {
       tasks = tasks.filter(t => !t.done);
       render();
     });
-
     clearAll.addEventListener("click", () => {
       tasks = [];
       render();
     });
-
     const saved = localStorage.getItem("tasks");
     tasks = saved ? JSON.parse(saved) : [];
     render();
   </script>
 </body>
 </html>
-
