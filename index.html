@@ -40,6 +40,10 @@
       border:1px solid rgba(255,255,255,0.04);
       position: relative;
       z-index: 1;
+
+      display: flex;
+      flex-direction: column;
+      max-height: 80vh; /* Limit container height */
     }
 
     header{
@@ -92,6 +96,20 @@
       display:flex;
       flex-direction:column;
       gap:10px;
+      overflow-y:auto; /* Enable vertical scroll */
+      max-height: 50vh; /* Limit list height */
+    }
+
+    /* Scrollbar style */
+    .list::-webkit-scrollbar {
+      width: 8px;
+    }
+    .list::-webkit-scrollbar-thumb {
+      background: rgba(124,92,255,0.4);
+      border-radius: 4px;
+    }
+    .list::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.02);
     }
 
     .item{
@@ -167,7 +185,7 @@
       font-size:13px;
     }
 
-    /* 🔥 Small Floating Minion */
+    /* Small Floating Minion */
     .minion{
       position: fixed;
       bottom: 15px;
@@ -198,7 +216,7 @@
       50%{ transform: translateY(-6px); }
     }
 
-    /* Fullscreen Minion Pop-up */
+    /* Minion Fullscreen Overlay */
     .minion-overlay{
       position: fixed;
       top:0;
@@ -241,7 +259,7 @@
       font-weight:600;
     }
 
-    /* ❤️ Falling Hearts */
+    /* Falling Hearts */
     .heart {
       position: absolute;
       width: 20px;
@@ -250,7 +268,6 @@
       transform: rotate(-45deg);
       animation: fall linear infinite;
     }
-
     .heart::before,
     .heart::after {
       content: "";
@@ -260,7 +277,6 @@
       background: pink;
       border-radius: 50%;
     }
-
     .heart::before { top: -10px; left: 0; }
     .heart::after { left: 10px; top: 0; }
 
@@ -406,15 +422,12 @@
 
     minion.addEventListener("click", () => {
       overlay.classList.add("active");
-      // Start hearts animation
       heartsInterval = setInterval(createHeart, 300);
     });
 
     closeBtn.addEventListener("click", () => {
       overlay.classList.remove("active");
-      // Stop hearts animation
       clearInterval(heartsInterval);
-      // Remove remaining hearts
       overlay.querySelectorAll(".heart").forEach(h => h.remove());
     });
   </script>
