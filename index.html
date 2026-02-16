@@ -1,316 +1,309 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Simple To-Do List</title>
-  <style>
-    :root{
-      --bg: #0f1724;
-      --card: #0b1220;
-      --muted: #97a0b3;
-      --accent: #7c5cff;
-      --accent-2: #4dd0e1;
-      --glass: rgba(255,255,255,0.04);
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Watch List</title>
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: Inter, system-ui;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent),
-                  radial-gradient(900px 500px at 90% 90%, rgba(77,208,225,0.06), transparent),
-                  var(--bg);
-      color:#e6eef8;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:40px 20px;
-      overflow-x: hidden;
-    }
+<style>
+:root{
+  --bg:#0f1724;
+  --accent:#7c5cff;
+  --accent2:#4dd0e1;
+}
 
-    .container{
-      width:100%;
-      max-width:720px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-      border-radius:14px;
-      padding:28px;
-      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
-      border:1px solid rgba(255,255,255,0.04);
-      display:flex;
-      flex-direction:column;
-      max-height:80vh;
-    }
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,system-ui;
+  background:var(--bg);
+  color:#e6eef8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+  overflow:hidden;
+}
 
-    header{
-      display:flex;
-      align-items:center;
-      gap:16px;
-      margin-bottom:18px;
-    }
+/* 🌌 Animated Stars Background */
+.stars{
+  position:fixed;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  background-image:radial-gradient(white 1px, transparent 1px);
+  background-size:50px 50px;
+  opacity:0.08;
+  animation:moveStars 60s linear infinite;
+}
+@keyframes moveStars{
+  from{background-position:0 0;}
+  to{background-position:1000px 1000px;}
+}
 
-    header h1{margin:0;font-size:20px;}
-    header p{margin:0;color:var(--muted);font-size:13px}
+.container{
+  width:100%;
+  max-width:720px;
+  background:rgba(255,255,255,0.03);
+  backdrop-filter:blur(12px);
+  border-radius:14px;
+  padding:28px;
+  position:relative;
+  z-index:2;
+  box-shadow:0 0 40px rgba(124,92,255,0.3);
+}
 
-    .add-row{
-      display:flex;
-      gap:12px;
-      margin-bottom:18px;
-    }
+header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:18px;
+}
 
-    .add-row input{
-      flex:1;
-      padding:12px 14px;
-      background:var(--glass);
-      border:1px solid rgba(255,255,255,0.03);
-      border-radius:10px;
-      color:inherit;
-      outline:none;
-      font-size:15px;
-    }
+header h1{margin:0;font-size:20px}
+header p{margin:0;color:#97a0b3;font-size:13px}
 
-    .btn{
-      background:linear-gradient(180deg,var(--accent), #5a3ce6);
-      border:none;
-      color:white;
-      padding:10px 14px;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:600;
-    }
+.add-row{
+  display:flex;
+  gap:12px;
+  margin-bottom:18px;
+}
 
-    .list{
-      list-style:none;
-      padding:0;
-      margin:0;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      overflow-y:auto;
-      max-height:50vh;
-    }
+.add-row input{
+  flex:1;
+  padding:12px;
+  border-radius:10px;
+  border:none;
+  background:rgba(255,255,255,0.06);
+  color:white;
+  outline:none;
+}
 
-    .item{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:12px;
-      border-radius:10px;
-      background:rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.03);
-    }
+.btn{
+  background:linear-gradient(180deg,var(--accent),#5a3ce6);
+  border:none;
+  padding:10px 14px;
+  border-radius:10px;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 0 15px rgba(124,92,255,0.6);
+}
 
-    .checkbox{
-      width:18px;
-      height:18px;
-      border-radius:6px;
-      display:inline-grid;
-      place-items:center;
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,0.06);
-    }
+.list{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-height:300px;
+  overflow-y:auto;
+}
 
-    .label{
-      flex:1;
-      font-size:15px;
-      word-break:break-word;
-    }
+.item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.05);
+}
 
-    .label.completed{
-      text-decoration:line-through;
-      opacity:0.6;
-    }
+.checkbox{
+  width:18px;
+  height:18px;
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,0.4);
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+}
 
-    .small{
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.04);
-      padding:6px 8px;
-      border-radius:8px;
-      color:var(--muted);
-      font-size:13px;
-      cursor:pointer;
-    }
+.label.completed{
+  text-decoration:line-through;
+  opacity:0.5;
+}
 
-    .meta{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:14px;
-      color:var(--muted);
-      font-size:13px;
-    }
+.small{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.3);
+  padding:6px 8px;
+  border-radius:8px;
+  color:#97a0b3;
+  cursor:pointer;
+}
 
-    /* Hidden Minion */
-    .minion{
-      position: fixed;
-      bottom: 15px;
-      right: 15px;
-      cursor: pointer;
-      animation: float 3s ease-in-out infinite;
-      z-index: 10;
-      display: none;
-    }
+.meta{
+  display:flex;
+  justify-content:space-between;
+  margin-top:14px;
+  font-size:13px;
+  color:#97a0b3;
+}
 
-    .minion img{
-      width:200px;
-      border-radius:50px;
-    }
+/* 🐣 Hidden Minion */
+.minion{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  display:none;
+  cursor:pointer;
+  animation:float 3s ease-in-out infinite;
+  z-index:5;
+}
+.minion img{
+  width:160px;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
 
-    @keyframes float{
-      0%,100%{transform:translateY(0);}
-      50%{transform:translateY(-6px);}
-    }
+/* Overlay */
+.minion-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.95);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  overflow:hidden;
+  z-index:10;
+}
+.minion-overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+.minion-overlay img{
+  max-width:350px;
+  border-radius:20px;
+  margin-bottom:20px;
+}
+.close-btn{
+  background:var(--accent);
+  border:none;
+  padding:10px 20px;
+  border-radius:12px;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 0 20px rgba(124,92,255,0.8);
+}
 
-    /* Overlay */
-    .minion-overlay{
-      position:fixed;
-      top:0;
-      left:0;
-      width:100vw;
-      height:100vh;
-      background:rgba(0,0,0,0.95);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      color:white;
-      font-size:20px;
-      z-index:9999;
-      opacity:0;
-      pointer-events:none;
-      transition:0.3s;
-      overflow:hidden;
-    }
+/* 💜 Falling Hearts */
+.heart{
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:#7c5cff;
+  transform:rotate(-45deg);
+  animation:fall linear infinite;
+  box-shadow:0 0 12px rgba(124,92,255,0.8);
+}
+.heart::before,
+.heart::after{
+  content:"";
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:#7c5cff;
+  border-radius:50%;
+}
+.heart::before{top:-10px;left:0}
+.heart::after{left:10px;top:0}
 
-    .minion-overlay.active{
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    .minion-overlay img{
-      max-width:400px;
-      border-radius:20px;
-      margin-bottom:20px;
-    }
-
-    .close-btn{
-      background:var(--accent);
-      border:none;
-      padding:10px 20px;
-      font-size:16px;
-      border-radius:12px;
-      cursor:pointer;
-      color:white;
-      font-weight:600;
-    }
-
-    /* 💜 Falling Hearts */
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: #7c5cff;
-      transform: rotate(-45deg);
-      animation: fall linear infinite;
-    }
-
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: #7c5cff;
-      border-radius: 50%;
-    }
-
-    .heart::before { top: -10px; left: 0; }
-    .heart::after { left: 10px; top: 0; }
-
-    @keyframes fall {
-      0% { transform: translateY(-50px) rotate(-45deg); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(-45deg); opacity: 0; }
-    }
-
-  </style>
+@keyframes fall{
+  0%{transform:translateY(-50px) rotate(-45deg);opacity:1}
+  100%{transform:translateY(110vh) rotate(-45deg);opacity:0}
+}
+</style>
 </head>
+
 <body>
 
+<div class="stars"></div>
+
 <div class="container">
-  <header>
-    <div style="width:52px;height:52px;border-radius:12px;overflow:hidden;">
-      <img src="v3.jpeg" style="width:100%;height:100%;object-fit:cover;">
-    </div>
-    <div>
-      <h1>Watch list</h1>
-      <p>Mga dapat panoodin ngayong araw</p>
-    </div>
-  </header>
+<header>
+<div style="width:52px;height:52px;border-radius:12px;overflow:hidden;">
+<img src="v3.jpeg" style="width:100%;height:100%;object-fit:cover;">
+</div>
+<div>
+<h1>Watch list</h1>
+<p>Mga dapat panoodin ngayong araw</p>
+</div>
+</header>
 
-  <div class="add-row">
-    <input id="taskInput" type="text" placeholder="Add here." />
-    <button id="addBtn" class="btn">Add</button>
-  </div>
+<div class="add-row">
+<input id="taskInput" type="text" placeholder="Add here." />
+<button id="addBtn" class="btn">Add</button>
+</div>
 
-  <ul id="todoList" class="list"></ul>
+<ul id="todoList" class="list"></ul>
 
-  <div class="meta">
-    <div id="count">0 tasks</div>
-    <div style="display:flex;gap:8px;">
-      <button id="clearCompleted" class="small">Clear completed</button>
-      <button id="clearAll" class="small">Clear all</button>
-    </div>
-  </div>
+<div class="meta">
+<div id="count">0 tasks</div>
+</div>
 </div>
 
 <div class="minion" id="minion">
-  <img src="minion-removebg-preview.png">
+<img src="minion-removebg-preview.png">
 </div>
 
-<div class="minion-overlay" id="minionOverlay">
-  <img src="https://media1.tenor.com/m/kutFNFXxSIsAAAAd/minion-minion-loves.gif">
-  <p>Happy valentine :) the chocolates are in my locker (84) no password</p>
-  <button class="close-btn" id="closeOverlay">Close</button>
+<!-- Overlay with fixed message -->
+<div class="minion-overlay" id="overlay">
+<img src="https://media1.tenor.com/m/kutFNFXxSIsAAAAd/minion-minion-loves.gif">
+<p>
+  Happy Valentine :)<br>
+  The chocolates are in locker 84 🍫✨
+</p>
+<button class="close-btn" id="closeBtn">Close</button>
 </div>
 
 <script>
-const input = document.getElementById('taskInput');
-const addBtn = document.getElementById('addBtn');
-const list = document.getElementById('todoList');
-const countEl = document.getElementById('count');
-const minion = document.getElementById("minion");
-const overlay = document.getElementById("minionOverlay");
-const closeBtn = document.getElementById("closeOverlay");
+const input=document.getElementById("taskInput");
+const addBtn=document.getElementById("addBtn");
+const list=document.getElementById("todoList");
+const countEl=document.getElementById("count");
+const minion=document.getElementById("minion");
+const overlay=document.getElementById("overlay");
+const closeBtn=document.getElementById("closeBtn");
 
-let tasks = [];
+let tasks=[];
+let heartsInterval;
+
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.style.left=Math.random()*100+"vw";
+  const duration=5+Math.random()*5;
+  heart.style.animationDuration=duration+"s";
+  overlay.appendChild(heart);
+  setTimeout(()=>heart.remove(),duration*1000);
+}
 
 function render(){
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  list.innerHTML = "";
+  list.innerHTML="";
   tasks.forEach((t,i)=>{
     const li=document.createElement("li");
     li.className="item";
-
     const cb=document.createElement("div");
     cb.className="checkbox";
     cb.innerHTML=t.done?"✔":"";
-    cb.onclick=()=>{t.done=!t.done;render();};
-
+    cb.onclick=()=>{t.done=!t.done;render();}
     const label=document.createElement("div");
     label.className="label"+(t.done?" completed":"");
     label.textContent=t.text;
-
-    const del=document.createElement("button");
-    del.className="small";
-    del.textContent="Delete";
-    del.onclick=()=>{tasks.splice(i,1);render();};
-
-    li.append(cb,label,del);
+    li.append(cb,label);
     list.appendChild(li);
   });
-  const remaining=tasks.filter(t=>!t.done).length;
-  countEl.textContent=`${remaining} task${remaining===1?"":"s"} left`;
+  countEl.textContent=tasks.length+" tasks";
 }
 
 function addTask(text){
@@ -331,6 +324,7 @@ function addTask(text){
 addBtn.onclick=()=>addTask(input.value);
 input.addEventListener("keypress",e=>{if(e.key==="Enter")addTask(input.value);});
 
+/* Minion click shows fixed message and hearts */
 minion.onclick=()=>{
   overlay.classList.add("active");
   heartsInterval=setInterval(createHeart,300);
@@ -342,19 +336,6 @@ closeBtn.onclick=()=>{
   overlay.querySelectorAll(".heart").forEach(h=>h.remove());
 };
 
-let heartsInterval;
-function createHeart(){
-  const heart=document.createElement("div");
-  heart.className="heart";
-  heart.style.left=Math.random()*100+"vw";
-  const duration=5+Math.random()*5;
-  heart.style.animationDuration=duration+"s";
-  overlay.appendChild(heart);
-  setTimeout(()=>heart.remove(),duration*1000);
-}
-
-const saved=localStorage.getItem("tasks");
-tasks=saved?JSON.parse(saved):[];
 render();
 </script>
 
