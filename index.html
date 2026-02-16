@@ -36,14 +36,11 @@
       background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
       border-radius:14px;
       padding:28px;
-      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
       border:1px solid rgba(255,255,255,0.04);
-      position: relative;
-      z-index: 1;
-
-      display: flex;
-      flex-direction: column;
-      max-height: 80vh; /* Limit container height */
+      display:flex;
+      flex-direction:column;
+      max-height:80vh;
     }
 
     header{
@@ -53,12 +50,8 @@
       margin-bottom:18px;
     }
 
-    header h1{
-      margin:0;
-      font-size:20px;
-      letter-spacing:0.2px;
-    }
-    header p{margin:0; color:var(--muted); font-size:13px}
+    header h1{margin:0;font-size:20px;}
+    header p{margin:0;color:var(--muted);font-size:13px}
 
     .add-row{
       display:flex;
@@ -66,7 +59,7 @@
       margin-bottom:18px;
     }
 
-    .add-row input[type="text"]{
+    .add-row input{
       flex:1;
       padding:12px 14px;
       background:var(--glass);
@@ -85,8 +78,6 @@
       border-radius:10px;
       cursor:pointer;
       font-weight:600;
-      letter-spacing:0.2px;
-      box-shadow: 0 6px 18px rgba(124,92,255,0.14);
     }
 
     .list{
@@ -96,20 +87,8 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      overflow-y:auto; /* Enable vertical scroll */
-      max-height: 50vh; /* Limit list height */
-    }
-
-    /* Scrollbar style */
-    .list::-webkit-scrollbar {
-      width: 8px;
-    }
-    .list::-webkit-scrollbar-thumb {
-      background: rgba(124,92,255,0.4);
-      border-radius: 4px;
-    }
-    .list::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.02);
+      overflow-y:auto;
+      max-height:50vh;
     }
 
     .item{
@@ -153,29 +132,6 @@
       cursor:pointer;
     }
 
-    .filters{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      margin-top:14px;
-    }
-
-    .filters .chip{
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:13px;
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,0.03);
-      color:var(--muted);
-    }
-
-    .filters .chip.active{
-      color:var(--bg);
-      background:linear-gradient(90deg,var(--accent-2),var(--accent));
-      font-weight:700;
-      border:none;
-    }
-
     .meta{
       display:flex;
       justify-content:space-between;
@@ -185,98 +141,90 @@
       font-size:13px;
     }
 
-    /* Small Floating Minion */
+    /* Hidden Minion */
     .minion{
       position: fixed;
       bottom: 15px;
       right: 15px;
       cursor: pointer;
-      text-align: center;
       animation: float 3s ease-in-out infinite;
       z-index: 10;
+      display: none;
     }
 
     .minion img{
-      width: 200px;
-      border-radius: 50px;
-    }
-
-    .speech{
-      background: white;
-      color: black;
-      padding: 4px 8px;
-      border-radius: 8px;
-      font-size: 11px;
-      margin-bottom: 4px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+      width:200px;
+      border-radius:50px;
     }
 
     @keyframes float{
-      0%,100%{ transform: translateY(0px); }
-      50%{ transform: translateY(-6px); }
+      0%,100%{transform:translateY(0);}
+      50%{transform:translateY(-6px);}
     }
 
-    /* Minion Fullscreen Overlay */
+    /* Overlay */
     .minion-overlay{
-      position: fixed;
+      position:fixed;
       top:0;
       left:0;
       width:100vw;
       height:100vh;
-      background: rgba(0,0,0,0.95);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      color: white;
-      font-size: 20px;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      overflow: hidden;
+      background:rgba(0,0,0,0.95);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      color:white;
+      font-size:20px;
+      z-index:9999;
+      opacity:0;
+      pointer-events:none;
+      transition:0.3s;
+      overflow:hidden;
     }
 
     .minion-overlay.active{
       opacity:1;
-      pointer-events: auto;
+      pointer-events:auto;
     }
 
     .minion-overlay img{
-      max-width: 400px;
-      border-radius: 20px;
-      margin-bottom: 20px;
+      max-width:400px;
+      border-radius:20px;
+      margin-bottom:20px;
     }
 
-    .minion-overlay .close-btn{
-      background: var(--accent);
+    .close-btn{
+      background:var(--accent);
       border:none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 12px;
+      padding:10px 20px;
+      font-size:16px;
+      border-radius:12px;
       cursor:pointer;
       color:white;
       font-weight:600;
     }
 
-    /* Falling Hearts */
+    /* 💜 Falling Hearts */
     .heart {
       position: absolute;
       width: 20px;
       height: 20px;
-      background: pink;
+      background: #7c5cff;
       transform: rotate(-45deg);
       animation: fall linear infinite;
     }
+
     .heart::before,
     .heart::after {
       content: "";
       position: absolute;
       width: 20px;
       height: 20px;
-      background: pink;
+      background: #7c5cff;
       border-radius: 50%;
     }
+
     .heart::before { top: -10px; left: 0; }
     .heart::after { left: 10px; top: 0; }
 
@@ -284,152 +232,131 @@
       0% { transform: translateY(-50px) rotate(-45deg); opacity: 1; }
       100% { transform: translateY(110vh) rotate(-45deg); opacity: 0; }
     }
+
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <header>
-      <div style="width:52px; height:52px; border-radius:12px; overflow:hidden;">
-        <img src="v3.jpeg" style="width:100%; height:100%; object-fit:cover;">
-      </div>
-      <div>
-        <h1>Watch list</h1>
-        <p>Mga dapat panoodin ngayong araw</p>
-      </div>
-    </header>
-
-    <div class="add-row">
-      <input id="taskInput" type="text" placeholder="Add here." />
-      <button id="addBtn" class="btn">Add</button>
+<div class="container">
+  <header>
+    <div style="width:52px;height:52px;border-radius:12px;overflow:hidden;">
+      <img src="v3.jpeg" style="width:100%;height:100%;object-fit:cover;">
     </div>
-
-    <ul id="todoList" class="list"></ul>
-
-    <div class="filters">
-      <div class="chip active" data-filter="all">All</div>
-      <div class="chip" data-filter="active">Active</div>
-      <div class="chip" data-filter="completed">Completed</div>
+    <div>
+      <h1>Watch list</h1>
+      <p>Mga dapat panoodin ngayong araw</p>
     </div>
+  </header>
 
-    <div class="meta">
-      <div id="count">0 tasks</div>
-      <div style="display:flex;gap:8px;">
-        <button id="clearCompleted" class="small">Clear completed</button>
-        <button id="clearAll" class="small">Clear all</button>
-      </div>
-    </div>
+  <div class="add-row">
+    <input id="taskInput" type="text" placeholder="Add here." />
+    <button id="addBtn" class="btn">Add</button>
   </div>
 
-  <!-- Minion -->
-  <div class="minion" id="minion">
-    <div class="speech">Click me!</div>
-    <img src="minion-removebg-preview.png">
+  <ul id="todoList" class="list"></ul>
+
+  <div class="meta">
+    <div id="count">0 tasks</div>
+    <div style="display:flex;gap:8px;">
+      <button id="clearCompleted" class="small">Clear completed</button>
+      <button id="clearAll" class="small">Clear all</button>
+    </div>
   </div>
+</div>
 
-  <!-- Minion Fullscreen Overlay -->
-  <div class="minion-overlay" id="minionOverlay">
-    <img src="https://media1.tenor.com/m/kutFNFXxSIsAAAAd/minion-minion-loves.gif" alt="Minion">
-    <p>Happy valentine :) the chocolates are in my locker (84) no password</p>
-    <button class="close-btn" id="closeOverlay">Close</button>
-  </div>
+<div class="minion" id="minion">
+  <img src="minion-removebg-preview.png">
+</div>
 
-  <script>
-    const input = document.getElementById('taskInput');
-    const addBtn = document.getElementById('addBtn');
-    const list = document.getElementById('todoList');
-    const countEl = document.getElementById('count');
-    const clearCompleted = document.getElementById('clearCompleted');
-    const clearAll = document.getElementById('clearAll');
+<div class="minion-overlay" id="minionOverlay">
+  <img src="https://media1.tenor.com/m/kutFNFXxSIsAAAAd/minion-minion-loves.gif">
+  <p>Happy valentine :) the chocolates are in my locker (84) no password</p>
+  <button class="close-btn" id="closeOverlay">Close</button>
+</div>
 
-    let tasks = [];
-    let filter = "all";
+<script>
+const input = document.getElementById('taskInput');
+const addBtn = document.getElementById('addBtn');
+const list = document.getElementById('todoList');
+const countEl = document.getElementById('count');
+const minion = document.getElementById("minion");
+const overlay = document.getElementById("minionOverlay");
+const closeBtn = document.getElementById("closeOverlay");
 
-    function render(){
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      list.innerHTML = "";
+let tasks = [];
 
-      const visible = tasks.filter(t => {
-        if(filter === "all") return true;
-        if(filter === "active") return !t.done;
-        if(filter === "completed") return t.done;
-      });
+function render(){
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  list.innerHTML = "";
+  tasks.forEach((t,i)=>{
+    const li=document.createElement("li");
+    li.className="item";
 
-      visible.forEach((t, idx) => {
-        const li = document.createElement("li");
-        li.className = "item";
+    const cb=document.createElement("div");
+    cb.className="checkbox";
+    cb.innerHTML=t.done?"✔":"";
+    cb.onclick=()=>{t.done=!t.done;render();};
 
-        const cb = document.createElement("div");
-        cb.className = "checkbox";
-        cb.innerHTML = t.done ? "✔" : "";
-        cb.addEventListener("click", () => toggleDone(idx));
+    const label=document.createElement("div");
+    label.className="label"+(t.done?" completed":"");
+    label.textContent=t.text;
 
-        const label = document.createElement("div");
-        label.className = "label" + (t.done ? " completed" : "");
-        label.textContent = t.text;
+    const del=document.createElement("button");
+    del.className="small";
+    del.textContent="Delete";
+    del.onclick=()=>{tasks.splice(i,1);render();};
 
-        const del = document.createElement("button");
-        del.className = "small";
-        del.textContent = "Delete";
-        del.addEventListener("click", () => removeTask(idx));
+    li.append(cb,label,del);
+    list.appendChild(li);
+  });
+  const remaining=tasks.filter(t=>!t.done).length;
+  countEl.textContent=`${remaining} task${remaining===1?"":"s"} left`;
+}
 
-        li.appendChild(cb);
-        li.appendChild(label);
-        li.appendChild(del);
+function addTask(text){
+  const trimmed=text.trim();
+  if(!trimmed) return;
 
-        list.appendChild(li);
-      });
+  if(trimmed.toLowerCase()==="vanessa"){
+    minion.style.display="block";
+    input.value="";
+    return;
+  }
 
-      const remaining = tasks.filter(t => !t.done).length;
-      countEl.textContent = `${remaining} task${remaining === 1 ? "" : "s"} left`;
-    }
+  tasks.unshift({text:trimmed,done:false});
+  input.value="";
+  render();
+}
 
-    function addTask(text){ const trimmed = text.trim(); if(!trimmed) return; tasks.unshift({ text: trimmed, done: false }); input.value = ""; render(); }
-    function toggleDone(i){ tasks[i].done = !tasks[i].done; render(); }
-    function removeTask(i){ tasks.splice(i,1); render(); }
+addBtn.onclick=()=>addTask(input.value);
+input.addEventListener("keypress",e=>{if(e.key==="Enter")addTask(input.value);});
 
-    addBtn.addEventListener("click", () => addTask(input.value));
-    input.addEventListener("keypress", e => { if(e.key === "Enter") addTask(input.value); });
+minion.onclick=()=>{
+  overlay.classList.add("active");
+  heartsInterval=setInterval(createHeart,300);
+};
 
-    clearCompleted.addEventListener("click", () => { tasks = tasks.filter(t => !t.done); render(); });
-    clearAll.addEventListener("click", () => { tasks = []; render(); });
+closeBtn.onclick=()=>{
+  overlay.classList.remove("active");
+  clearInterval(heartsInterval);
+  overlay.querySelectorAll(".heart").forEach(h=>h.remove());
+};
 
-    const saved = localStorage.getItem("tasks");
-    tasks = saved ? JSON.parse(saved) : [];
-    render();
+let heartsInterval;
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.style.left=Math.random()*100+"vw";
+  const duration=5+Math.random()*5;
+  heart.style.animationDuration=duration+"s";
+  overlay.appendChild(heart);
+  setTimeout(()=>heart.remove(),duration*1000);
+}
 
-    // Minion overlay & hearts
-    const minion = document.getElementById("minion");
-    const overlay = document.getElementById("minionOverlay");
-    const closeBtn = document.getElementById("closeOverlay");
+const saved=localStorage.getItem("tasks");
+tasks=saved?JSON.parse(saved):[];
+render();
+</script>
 
-    let heartsInterval;
-
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.style.left = Math.random() * 100 + "vw";
-      const duration = 5 + Math.random() * 5;
-      heart.style.animationDuration = duration + "s";
-      const size = 10 + Math.random() * 20;
-      heart.style.width = size + "px";
-      heart.style.height = size + "px";
-      heart.style.opacity = Math.random();
-      overlay.appendChild(heart);
-
-      setTimeout(() => heart.remove(), duration * 1000);
-    }
-
-    minion.addEventListener("click", () => {
-      overlay.classList.add("active");
-      heartsInterval = setInterval(createHeart, 300);
-    });
-
-    closeBtn.addEventListener("click", () => {
-      overlay.classList.remove("active");
-      clearInterval(heartsInterval);
-      overlay.querySelectorAll(".heart").forEach(h => h.remove());
-    });
-  </script>
 </body>
 </html>
